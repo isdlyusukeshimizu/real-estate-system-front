@@ -5,7 +5,7 @@ services:
     dockerfilePath: ./backend/real_estate_api/Dockerfile
     dockerContext: ./backend/real_estate_api
     plan: starter
-    branch: main
+    branch: devin/1746941770-connect-backend-frontend
     numInstances: 1
     healthCheckPath: /healthz
     envVars:
@@ -24,9 +24,9 @@ services:
     name: real-estate-frontend
     env: docker
     dockerfilePath: ./frontend/Dockerfile
-    dockerContext: ./frontend
+    dockerContext: ./
     plan: starter
-    branch: main
+    branch: devin/1746941770-connect-backend-frontend
     numInstances: 1
     envVars:
       - key: NEXT_PUBLIC_API_URL
