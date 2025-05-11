@@ -44,7 +44,11 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 @app.get("/healthz")
 async def healthz():
-    return {"status": "ok"}
+    """
+    Health check endpoint for Render deployment.
+    This endpoint is used by Render to verify the service is running.
+    """
+    return {"status": "ok", "service": settings.PROJECT_NAME}
 
 @app.on_event("startup")
 def startup_event():

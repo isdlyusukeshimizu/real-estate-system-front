@@ -1,17 +1,22 @@
 from sqlalchemy.orm import Session
 from datetime import datetime, date
+import os
 from app.core.security import get_password_hash
 from app.models.user import User
 from app.models.customer import Customer
 from app.models.activity import Activity
 from app.models.registry_data import RegistryData
 from app.models.billing import Billing
-from app.db.session import Base, engine
+from app.db.session import Base, engine, is_sqlite
 
 def init_db():
     Base.metadata.create_all(bind=engine)
     
 def init_sample_data(db: Session):
+    if not is_sqlite:
+        print("Production environment detected, skipping sample data initialization")
+        return
+        
     user_count = db.query(User).count()
     if user_count > 0:
         print("Sample data already exists, skipping initialization")
