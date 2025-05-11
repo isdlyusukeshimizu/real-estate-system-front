@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: real-estate-backend
+    env: docker
+    dockerfilePath: ./backend/real_estate_api/Dockerfile
+    dockerContext: ./backend/real_estate_api
+    plan: starter
+    branch: main
+    numInstances: 1
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: PORT
+        value: 8000
+
+  - type: web
+    name: real-estate-frontend
+    env: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    plan: starter
+    branch: main
+    numInstances: 1
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: real-estate-backend
+          type: web
+          property: url
+        postfix: /api/v1
+      - key: PORT
+        value: 3000
+
+databases:
+  - name: real-estate-db
+    plan: starter
+    databaseName: real_estate
+    user: real_estate_user
